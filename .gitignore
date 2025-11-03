@@ -1,0 +1,43 @@
+# ======================
+# R session and project
+# ======================
+*.RData
+*.Rhistory
+.Rproj.user/
+.Ruserdata
+
+# ======================
+# Output / results
+# ======================
+# Salmon output folders
+salmon_output/
+quant/
+# Any other analysis output
+results/
+plots/
+figures/
+
+# ======================
+# System files
+# ======================
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+# Linux
+*~
+
+# ======================
+# GitHub Pages / Jekyll
+# ======================
+# Ignore Jekyll build output (if you use GitHub Pages)
+_site/
+.sass-cache/
+
+# ======================
+# Logs and temporary files
+# ======================
+*.log
+*.tmp
+*.bak
+*.swp
