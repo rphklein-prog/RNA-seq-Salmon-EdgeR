@@ -2,8 +2,8 @@
 
 # Runs salmon on files in a data directory, matching forward and reverse reads within the
 # directory. Assumes forward and reverse reads end in _1.fq.gz and _2.fq.gz. Takes three 
-# arguments: path to the data directory, and desired output directory path and name 
-# (should end in .salmon) and the salmon index location. 
+# arguments: path to the data directory, desired output directory path and name 
+# (should end in .salmon), and the salmon index location. 
 
 set -euo pipefail
 
