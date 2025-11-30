@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 
-# this R script takes .sf files after salmon quantification of RNA-seq data, runs edgeR,
+# this R script takes quant.sf files after salmon quantification of RNA-seq data, runs edgeR,
 # and gene ontology analysis, and then creates various plots including mds, heatmap, and
-# volcano plots. It takes the following arguments: first is transcriptome name 
+# volcano plots. It takes the following arguments: first is the transcriptome name 
 # (ex EnsDb.Hsapiens.v75), the second is a file of the data groups (example: "Control", 
-# "Control", "Treatment", "Treatment"), the third through second to last are salmon quant 
+# "Control", "Treatment", "Treatment"), the third through second to last are the salmon quant 
 # file names, last is the name for the output file
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -85,11 +85,9 @@ genome_df <- data.frame(
   Ensembl= c("EnsDb.Hsapiens.v86", "EnsDb.Hsapiens.v75", "EnsDb.Mmusculus.v79"),
   Genome= c("hg38", "hg19", "mm10"))
 
-## start GO-seq gene ontology analysis with data from EdgeR after qL calculation chose the
-## significantly differentially expressed genes (up and down, just up, just down)and put 
-##cthem in a new table
-
-# convert transcript lengths → gene lengths (take median per gene)
+## start GO-seq gene ontology analysis with data from EdgeR after qL calculation, chose the
+## significantly differentially expressed genes (up and down, just up, just down) and put 
+## them in a new table
 
 for(subset in c("all", "upreg", "downreg")) {
   
@@ -112,7 +110,6 @@ for(subset in c("all", "upreg", "downreg")) {
   }
 }
 
-
 # convert ensembl gene ids to gene symbol, if no gene symbol use ensembl gene id, also
 # make sure each is unique 
 edgeR_counts <- as.data.frame(counts_table)
@@ -126,6 +123,7 @@ symbols <- mapIds(org.Hs.eg.db, keys=rownames(edgeR_fold), keytype = "ENSEMBL", 
 symbols[is.na(symbols)] <- rownames(edgeR_fold)[is.na(symbols)]
 symbols <- make.unique(symbols)
 rownames(edgeR_fold) <- symbols
+
 # return only significant genes with FDR < 0.05
 sig_genes <- edgeR_fold[edgeR_fold$FDR < 0.05, ]
 write.table(sig_genes, file = paste0(output_file, "_sig_DEG.txt"), sep = "\t", quote = FALSE, row.names = TRUE)
