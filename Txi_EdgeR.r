@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 
-# arguments: first is transcriptome name (ex EnsDb.Hsapiens.v75), the second is a file of 
+# takes salmon quant files and creates a count table using tximports, then runs edgeR and
+# outputs a table with differentially expressed genes. Takes the following arguments: 
+# the first is transcriptome name (ex EnsDb.Hsapiens.v75), the second is a file of 
 # the data groups (example: "Control", "Control", "Treatment", "Treatment"), the third 
 # through second to last are salmon quant file names, last is the name for the output file
 
@@ -25,7 +27,6 @@ library(tximport)
 library(edgeR)
 })
 
-
 # get names of samples and create table with a column for each sample's quant data for each
 # transcript the transcript file
 names(files) <- paste0("sample", seq_along(files))
@@ -41,7 +42,7 @@ x.full <- x
 
 # remove data with low counts in 2 or more samples
 print(apply(x$counts, 2, sum))
-keep <- rowSums(cpm(x)>10) >=2
+keep <- rowSums(cpm(x)>5) >=2
 x <- x[keep,]
 x$samples$lib.size <- colSums(x$counts)
 
